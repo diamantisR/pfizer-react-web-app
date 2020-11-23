@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { TiTick, TiTimes } from 'react-icons/ti';
 import WelcomeMessage from '../common/WelcomeMessage';
 import { API_COURSES } from '../api/request';
-import GetCourses from '../hooks/GetCourses';
 import { Table } from 'react-bootstrap';
 
 const Home = () => {
