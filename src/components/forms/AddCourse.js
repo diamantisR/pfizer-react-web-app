@@ -1,70 +1,148 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { API_COURSES } from '../api/request';
 
-const AddCourse = () => {
+const AddCourse = ({ showModal, toggleModal, addContact }) => {
+  let history = useHistory();
+
+  const [title, setTitle] = useState('');
+  const [image, setImage] = useState('');
+  const [duration, setDuration] = useState('');
+  const [open, setOpen] = useState(false);
+  const [instructors, setIntstructors] = useState([]);
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState({
+    normal: '',
+    early_bird: '',
+  });
+  const [dates, setDates] = useState({
+    start_date: '',
+    end_date: '',
+  });
+
+  const course = {
+    title,
+    image,
+    duration,
+    open,
+    instructors: [],
+    description,
+    price,
+    dates,
+  };
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    await axios.post(API_COURSES, course);
+    history.push('/');
+  };
+
+  const onInputChange = ({ target }, setState) => {
+    const { name, value } = target;
+    console.log(value);
+    if (
+      name === 'normal' ||
+      name === 'early_bird' ||
+      name === 'start_date' ||
+      name === 'end_date'
+    ) {
+      setState(address => ({
+        ...address,
+        [name]: value,
+      }));
+    } else {
+      setState(value);
+    }
+  };
+
+  const { normal, early_bird } = price;
+  const { start_date, end_date } = dates;
+
   return (
     <div className='container'>
-      <div className='py-4'>
-        <form>
-          <div class='form-group'>
-            <label for='exampleInputEmail1'>Title:</label>
-            <input
-              type='email'
-              class='form-control'
-              id='exampleInputEmail1'
-              aria-describedby='emailHelp'
+      <Form onSubmit={e => onSubmit(e)}>
+        {[
+          {
+            field: 'title',
+            state: title,
+            type: 'text',
+            placeholder: 'Title',
+            setState: setTitle,
+          },
+          {
+            field: 'image',
+            state: image,
+            type: 'text',
+            placeholder: 'Image Path',
+            setState: setImage,
+          },
+          {
+            field: 'duration',
+            state: duration,
+            type: 'text',
+            placeholder: 'Duration',
+            setState: setDuration,
+          },
+          {
+            field: 'description',
+            state: description,
+            type: 'text',
+            placeholder: 'description',
+            setState: setDescription,
+          },
+          {
+            field: 'normal',
+            state: normal,
+            type: 'number',
+            placeholder: 'Normal',
+            setState: setPrice,
+          },
+          {
+            field: 'early_bird',
+            state: early_bird,
+            type: 'number',
+            placeholder: 'Early bird',
+            setState: setPrice,
+          },
+          {
+            field: 'start_date',
+            state: start_date,
+            type: 'text',
+            placeholder: 'start_date',
+            setState: setDates,
+          },
+          {
+            field: 'end_date',
+            state: end_date,
+            type: 'text',
+            placeholder: 'end_date',
+            setState: setDates,
+          },
+          {
+            field: 'open',
+            state: open,
+            type: 'checkbox',
+            placeholder: 'Bookable',
+            setState: setOpen,
+          },
+        ].map(({ field, state, type, placeholder, setState }) => (
+          <Form.Group key={field} controlId={field}>
+            <Form.Label>{placeholder}</Form.Label>
+            <Form.Control
+              type={type}
+              placeholder={placeholder}
+              value={state}
+              name={field}
+              onChange={e => onInputChange(e, setState)}
             />
-            <small id='emailHelp' class='form-text text-muted'>
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div class='form-group'>
-            <label for='exampleInputPassword1'>Duration:</label>
-            <input
-              type='password'
-              class='form-control'
-              id='exampleInputPassword1'
-            />
-            <small id='emailHelp' class='form-text text-muted'>
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div class='form-group'>
-            <label for='exampleInputEmail1'>Image Path:</label>
-            <input
-              type='email'
-              class='form-control'
-              id='exampleInputEmail1'
-              aria-describedby='emailHelp'
-            />
-            <small id='emailHelp' class='form-text text-muted'>
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div class='form-group form-check'>
-            <input
-              type='checkbox'
-              class='form-check-input'
-              id='exampleCheck1'
-            />
-            <label class='form-check-label' for='exampleCheck1'>
-              Bookable
-            </label>
-          </div>
-          <hr />
-          <div class='form-group'>
-            <label for='exampleFormControlTextarea1'>Description</label>
-            <textarea
-              class='form-control'
-              id='exampleFormControlTextarea1'
-              rows='3'
-            ></textarea>
-            <hr />
-          </div>
-          <button type='submit' class='btn btn-primary'>
-            Add Course
-          </button>
-        </form>
-      </div>
+          </Form.Group>
+        ))}
+        <Button variant='primary' type='submit'>
+          Submit
+        </Button>
+      </Form>
     </div>
   );
 };
