@@ -6,10 +6,7 @@ import { Link } from 'react-router-dom';
 const CourseCard = ({ course }) => {
   return (
     <>
-      <Card
-        style={{ width: '21rem', marginBottom: '10px' }}
-        key={course }
-      >
+      <Card style={{ width: '21rem', marginBottom: '10px' }} key={course.id}>
         <Card.Header style={{ fontSize: '1.3rem' }}>{course.title}</Card.Header>
         <Card.Img variant='top' src={course.imagePath} />
         <Card.Body>

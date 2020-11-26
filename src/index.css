@@ -1,8 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -106,6 +104,7 @@ table {
 .jumbotron {
   margin-bottom: 1.2rem !important;
   border-radius: 0 !important;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .jumbo-welcome {
@@ -135,8 +134,8 @@ table {
   position: absolute;
   width: auto;
   height: auto;
-  top: 20px;
-  right: 40px;
+  top: 40px;
+  right: 50px;
 }
 
 .not-found {

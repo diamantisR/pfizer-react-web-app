@@ -30,7 +30,7 @@ const Home = () => {
       <div className='container'>
         <StatsComponent />
         <div className='py-4'>
-          <Table bordered>
+          <table class='table border shadow'>
             <thead>
               <tr>
                 <th scope='col'>#</th>
@@ -74,7 +74,7 @@ const Home = () => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </table>
           <Button className='float-right'>View all</Button>
         </div>
       </div>
