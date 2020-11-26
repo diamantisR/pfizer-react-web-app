@@ -23,21 +23,23 @@
   ],
   "courses": [
     {
-      "title": "",
-      "imagePath": "",
-      "duration": "",
-      "open": "on",
-      "instructors": [],
-      "description": "",
+      "id": "01",
+      "title": "Certified Scrum Master®",
+      "imagePath": "/scrum.png",
       "price": {
-        "normal": "111",
-        "early_bird": "111"
+        "normal": 1100,
+        "early_bird": 800
       },
       "dates": {
-        "start_date": "",
-        "end_date": ""
+        "start_date": "2019-09-27",
+        "end_date": "2019-09-28"
       },
-      "id": "01"
+      "duration": "2 days",
+      "open": true,
+      "instructors": [
+        "01"
+      ],
+      "description": "<p>This <strong>innovative Scrum class</strong> won’t be like any other you’ve heard of, with an unconventional focus on the deeply human foundations at work in teams building stuff together.</p><p>This two-day seminar is designed to give aspiring and beginning ScrumMasters and team members the foundations of Scrum and Agile practice. Chock full of exercises, the seminar creates lasting memories and learnings you can carry through into your team so you can avoid common Agile pitfalls. The seminar is designed and taught by <strong>Jim Coplien</strong>, <strong>author of Organizational Patterns and Lean/Agile Process and Architecture Coach</strong>.</p>"
     },
     {
       "id": "02",
@@ -57,31 +59,31 @@
         "01",
         "02"
       ],
-      "description": "<p>Do you want to <strong>design products based on opinions or based on evidence</strong>?</p><p>In this course you will learn how <strong>UX research</strong> builds products that users really need, can and want to use!</p>",
-      "end_date": "2020-10-275",
-      "": "true"
+      "description": "<p>Do you want to <strong>design products based on opinions or based on evidence</strong>?</p><p>In this course you will learn how <strong>UX research</strong> builds products that users really need, can and want to use!</p>"
     },
     {
-      "title": "",
-      "imagePath": "",
-      "duration": "",
-      "open": false,
-      "instructors": [],
-      "description": "5",
+      "id": "03",
+      "title": "Angular",
+      "imagePath": "/angular.png",
       "price": {
-        "normal": "5",
-        "early_bird": "5"
+        "normal": 450,
+        "early_bird": 400
       },
       "dates": {
-        "start_date": "",
-        "end_date": ""
+        "start_date": "2020-10-12",
+        "end_date": "2020-10-18"
       },
-      "id": "03"
+      "duration": "2 Wednesdays and 3 Saturdays",
+      "open": true,
+      "instructors": [
+        "02"
+      ],
+      "description": "<p>This code.learn program&nbsp;covers introductory and advanced <strong>Angular</strong> topics through extensive hands-on sessions and guidance from senior developers.</p>"
     },
     {
       "id": "04",
-      "title": "React22",
-      "imagePath": "/react.png22",
+      "title": "React",
+      "imagePath": "/react.png",
       "price": {
         "normal": 500,
         "early_bird": 450
@@ -95,38 +97,14 @@
       "instructors": [
         "01"
       ],
-      "description": "<p>This is a certified program by Athens Tech College, the first educational institution in Greece that specialises in computer science and ICT studies.</p><p>Participant’s registration (payment’s completion) implies full compliance and acceptance of Code.Learn Terms &amp; Conditions.</p>",
-      "start_date": "2018-10-199",
-      "early_bird": "4506"
+      "description": "<p>This is a certified program by Athens Tech College, the first educational institution in Greece that specialises in computer science and ICT studies.</p><p>Participant’s registration (payment’s completion) implies full compliance and acceptance of Code.Learn Terms &amp; Conditions.</p>"
     },
     {
-      "title": "555",
-      "imagePath": "",
-      "duration": "",
-      "open": "on",
-      "instructors": [
-        "02"
-      ],
-      "description": "",
-      "price": {
-        "normal": 0,
-        "early_bird": 0
-      },
-      "dates": {
-        "start_date": "",
-        "end_date": ""
-      },
-      "id": "1WF2HTY"
-    },
-    {
-      "title": "NEO APP",
+      "title": "afafaffa",
       "imagePath": "",
       "duration": "",
       "open": false,
-      "instructors": [
-        "01",
-        "02"
-      ],
+      "instructors": [],
       "description": "",
       "price": {
         "normal": 0,
@@ -136,45 +114,7 @@
         "start_date": "",
         "end_date": ""
       },
-      "id": "xyt-214"
-    },
-    {
-      "title": "MONO JOHN",
-      "imagePath": "",
-      "duration": "",
-      "open": false,
-      "instructors": [
-        "01"
-      ],
-      "description": "",
-      "price": {
-        "normal": 0,
-        "early_bird": 0
-      },
-      "dates": {
-        "start_date": "",
-        "end_date": ""
-      },
-      "id": "tGZu3YE"
-    },
-    {
-      "title": "YIANNIS",
-      "imagePath": "",
-      "duration": "",
-      "open": false,
-      "instructors": [
-        "02"
-      ],
-      "description": "",
-      "price": {
-        "normal": 0,
-        "early_bird": 0
-      },
-      "dates": {
-        "start_date": "",
-        "end_date": ""
-      },
-      "id": "dZ7Jg-O"
+      "id": "mgsVGdN"
     }
   ],
   "instructors": [

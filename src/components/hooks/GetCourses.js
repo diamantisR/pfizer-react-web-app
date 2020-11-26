@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spinner, Alert, ListGroup, Col } from 'react-bootstrap';
+import { Spinner, Alert, Col } from 'react-bootstrap';
 import { API_COURSES } from '../api/request';
 import Courses from '../pages/Courses';
 import CourseCard from '../common/CourseCard';
@@ -41,7 +41,7 @@ const GetCourses = () => {
   return (
     <Courses>
       {courses.map(course => (
-        <Col key={course.id}>
+        <Col sm='4'>
           <CourseCard course={course} />
         </Col>
       ))}

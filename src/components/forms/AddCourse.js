@@ -52,7 +52,8 @@ const AddCourse = () => {
       name === 'normal' ||
       name === 'early_bird' ||
       name === 'start_date' ||
-      name === 'end_date'
+      name === 'end_date' ||
+      name === 'open'
     ) {
       setState(address => ({
         ...address,
@@ -121,15 +122,17 @@ const AddCourse = () => {
           <Form.Group controlId='formBasicCheckbox'>
             <Form.Check
               type='checkbox'
+              value={open}
+              name={open}
               label='Bookable'
-              onChange={e => onInputChange(e, setOpen)}
+              onChange={e => setOpen(e.target.checked)}
             />
           </Form.Group>
         }
+        <h4>Instructors</h4>
         {options.map(i => (
-          <div>
-            <label>
-              <input
+            <label style={{marginRight: '5px'}}>
+            <input
                 type='checkbox'
                 name={i.id}
                 value={i.id}
@@ -138,8 +141,9 @@ const AddCourse = () => {
               />{' '}
               {i.name.first + ' ' + i.name.last}
             </label>
-          </div>
+          
         ))}
+        <hr />
         {[
           {
             field: 'description',

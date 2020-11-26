@@ -20,14 +20,12 @@ const ViewCourse = () => {
       end_date: '',
     },
     duration: '',
-    instructors: [],
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [instructorDetails, setInstructorDetails] = useState([]);
 
   const { id } = useParams();
-  const { instructors } = course;
 
   useEffect(() => {
     const fetchCourses = () => {
@@ -39,6 +37,11 @@ const ViewCourse = () => {
         .then(response => {
           setCourse(response.data);
           setIsLoading(false);
+          const { instructors } = response.data;
+          instructors.forEach(id => {
+            queryString += `id=${id}&`;
+          });
+          fetchInstructorsDetails(queryString.slice(0, -1));
         })
         .catch(error => {
           setError(error);
@@ -47,52 +50,54 @@ const ViewCourse = () => {
     };
 
     fetchCourses();
-    fetchInstructorsDetails();
   }, []);
 
-  const fetchInstructorsDetails = () => {
-    instructors.forEach(instructor => {
-      axios
-        .get(`${API_INSTRUCTORS}/${instructor}`)
-        .then(response => {
-          setInstructorDetails([...instructorDetails, response.data]);
-          console.log(instructorDetails);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
+  const fetchInstructorsDetails = query => {
+    axios
+      .get(`${API_INSTRUCTORS}/${query}`)
+      .then(response => {
+        setInstructorDetails(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
-    <div className='container'>
-      <h3>{course.title}</h3>
-      <img src={course.imagePath} alt={course.title} className='img-fluid' />
-      <h5>Price: {course.price.normal}€</h5>
-      <h5>
-        Bookable:
-        {course.open ? (
-          <TiTick size={23} style={{ fill: 'green' }} />
-        ) : (
-          <TiTimes size={23} style={{ fill: 'red' }} />
-        )}
-      </h5>
-      <div dangerouslySetInnerHTML={{ __html: course.description }}></div>
-      <p>
-        {
-          <Link
-            to={`/courses/edit/${course.id}`}
-            className='btn btn-success btn-edit'
-          >
-            Edit
-          </Link>
-        }
-      </p>
-      <h4>Instructors</h4>
-      {instructorDetails.map((instructor, index) => (
-        <p key={instructor.id}>{instructor.id}</p>
-      ))}
-    </div>
+    course && (
+      <div className='container'>
+        <h3>{course.title}</h3>
+        <img src={course.imagePath} alt={course.title} className='img-fluid' />
+        <h5>Price: {course.price.normal}€</h5>
+        <h5>
+          Bookable:
+          {course.open ? (
+            <TiTick size={23} style={{ fill: 'green' }} />
+          ) : (
+            <TiTimes size={23} style={{ fill: 'red' }} />
+          )}
+        </h5>
+        <div dangerouslySetInnerHTML={{ __html: course.description }}></div>
+        <p>
+          {
+            <Link
+              to={`/courses/edit/${course.id}`}
+              className='btn btn-success btn-edit'
+            >
+              Edit
+            </Link>
+          }
+        </p>
+        <h4>Instructors</h4>
+        {instructorDetails.map(instructor => (
+          <div>
+            <p>{instructor.gender}</p>
+          </div>
+        ))}
+        {instructorDetails && <h5>{instructorDetails.gender}</h5>}
+      </div>
+    )
   );
 };
 
