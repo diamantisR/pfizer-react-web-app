@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const CourseCard = ({ course }) => {
   return (
-    <Card style={{ width: '21rem' }}>
+    <Card style={{ width: '21rem', marginBottom: '10px' }}>
       <Card.Header style={{ fontSize: '1.3rem' }}>{course.title}</Card.Header>
       <Card.Img variant='top' src={course.imagePath} />
       <Card.Body>
@@ -21,7 +21,7 @@ const CourseCard = ({ course }) => {
         <Card.Text>
           Dates: {course.dates.start_date} - {course.dates.start_date}
         </Card.Text>
-        <Link to={`/courses/${course.id}`} className='btn btn-info btn-edit'>
+        <Link to={`/courses/${course.id}`} className='btn btn-outline-info btn-edit' style={{float: 'right'}}>
           View
         </Link>
       </Card.Body>

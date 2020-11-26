@@ -19,8 +19,6 @@ const GetCourses = () => {
         .get(API_COURSES)
         .then(response => {
           setCourses(response.data);
-          console.log(response.data);
-          console.log('GetCourses Hook')
           setIsLoading(false);
         })
         .catch(error => {

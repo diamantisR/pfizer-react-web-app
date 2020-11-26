@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { TiTick, TiTimes } from 'react-icons/ti';
 import WelcomeMessage from '../common/WelcomeMessage';
 import { API_COURSES } from '../api/request';
-import { Table } from 'react-bootstrap';
+import { Button, Pagination, Table } from 'react-bootstrap';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -50,7 +50,7 @@ const Home = () => {
                     <TiTimes size={22} style={{ fill: 'red' }} />
                   )}
                 </td>
-                <td>{course.price.normal}</td>
+                <td>{course.price.normal}€</td>
                 <td>
                   {course.dates.start_date} - {course.dates.end_date}
                 </td>
@@ -72,6 +72,7 @@ const Home = () => {
             ))}
           </tbody>
         </Table>
+        <Button className='float-right'>View all</Button>
       </div>
     </div>
   );

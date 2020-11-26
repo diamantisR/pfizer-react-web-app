@@ -1,47 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { API_COURSES } from '../api/request';
+import { API_COURSES, API_INSTRUCTORS } from '../api/request';
 
-const AddCourse = ({ showModal, toggleModal, addContact }) => {
+const AddCourse = () => {
   let history = useHistory();
-
+  const [options, setOptions] = useState([]);
   const [title, setTitle] = useState('');
-  const [image, setImage] = useState('');
+  const [imagePath, setImagePath] = useState('');
   const [duration, setDuration] = useState('');
   const [open, setOpen] = useState(false);
-  const [instructors, setIntstructors] = useState([]);
+  const [instructors, setInstructors] = useState([]);
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState({
-    normal: '',
-    early_bird: '',
+    normal: 0,
+    early_bird: 0,
   });
   const [dates, setDates] = useState({
     start_date: '',
     end_date: '',
   });
 
-  const course = {
-    title,
-    image,
-    duration,
-    open,
-    instructors: [],
-    description,
-    price,
-    dates,
+  useEffect(() => {
+    fetchInstructors();
+  }, []);
+
+  const fetchInstructors = async () => {
+    const result = await axios.get(API_INSTRUCTORS);
+    setOptions(result.data);
   };
 
   const onSubmit = async e => {
     e.preventDefault();
-    await axios.post(API_COURSES, course);
+    await axios.post(API_COURSES, {
+      title,
+      imagePath,
+      duration,
+      open,
+      instructors,
+      description,
+      price,
+      dates,
+    });
     history.push('/');
   };
 
   const onInputChange = ({ target }, setState) => {
     const { name, value } = target;
-    console.log(value);
     if (
       name === 'normal' ||
       name === 'early_bird' ||
@@ -57,12 +63,26 @@ const AddCourse = ({ showModal, toggleModal, addContact }) => {
     }
   };
 
+  const onCheckedChanged = e => {
+    const value = e.target.value;
+    if (instructors.includes(value)) {
+      setInstructors(instructors.filter(instructors => instructors !== value));
+    } else {
+      setInstructors([...instructors, value]);
+    }
+
+    console.log(instructors);
+  };
+
   const { normal, early_bird } = price;
   const { start_date, end_date } = dates;
 
   return (
     <div className='container'>
-      <Form onSubmit={e => onSubmit(e)}>
+      <Form
+        style={{ background: '#fff', padding: '10px' }}
+        onSubmit={e => onSubmit(e)}
+      >
         {[
           {
             field: 'title',
@@ -72,13 +92,6 @@ const AddCourse = ({ showModal, toggleModal, addContact }) => {
             setState: setTitle,
           },
           {
-            field: 'image',
-            state: image,
-            type: 'text',
-            placeholder: 'Image Path',
-            setState: setImage,
-          },
-          {
             field: 'duration',
             state: duration,
             type: 'text',
@@ -86,10 +99,53 @@ const AddCourse = ({ showModal, toggleModal, addContact }) => {
             setState: setDuration,
           },
           {
+            field: 'imagePath',
+            state: imagePath,
+            type: 'text',
+            placeholder: 'Image Path',
+            setState: setImagePath,
+          },
+        ].map(({ field, state, type, placeholder, setState }) => (
+          <Form.Group key={field} controlId={field}>
+            <Form.Label>{placeholder}</Form.Label>
+            <Form.Control
+              type={type}
+              placeholder={placeholder}
+              value={state}
+              name={field}
+              onChange={e => onInputChange(e, setState)}
+            />
+          </Form.Group>
+        ))}
+        {
+          <Form.Group controlId='formBasicCheckbox'>
+            <Form.Check
+              type='checkbox'
+              label='Bookable'
+              onChange={e => onInputChange(e, setOpen)}
+            />
+          </Form.Group>
+        }
+        {options.map(i => (
+          <div>
+            <label>
+              <input
+                type='checkbox'
+                name={i.id}
+                value={i.id}
+                checked={instructors.includes(i.id)}
+                onChange={onCheckedChanged}
+              />{' '}
+              {i.name.first + ' ' + i.name.last}
+            </label>
+          </div>
+        ))}
+        {[
+          {
             field: 'description',
             state: description,
             type: 'text',
-            placeholder: 'description',
+            placeholder: 'Description',
             setState: setDescription,
           },
           {
@@ -110,22 +166,15 @@ const AddCourse = ({ showModal, toggleModal, addContact }) => {
             field: 'start_date',
             state: start_date,
             type: 'text',
-            placeholder: 'start_date',
+            placeholder: 'Start date',
             setState: setDates,
           },
           {
             field: 'end_date',
             state: end_date,
             type: 'text',
-            placeholder: 'end_date',
+            placeholder: 'End Date',
             setState: setDates,
-          },
-          {
-            field: 'open',
-            state: open,
-            type: 'checkbox',
-            placeholder: 'Bookable',
-            setState: setOpen,
           },
         ].map(({ field, state, type, placeholder, setState }) => (
           <Form.Group key={field} controlId={field}>
@@ -139,8 +188,8 @@ const AddCourse = ({ showModal, toggleModal, addContact }) => {
             />
           </Form.Group>
         ))}
-        <Button variant='primary' type='submit'>
-          Submit
+        <Button className='float-right' variant='primary' type='submit'>
+          Add Course
         </Button>
       </Form>
     </div>
