@@ -6,6 +6,7 @@ import { Alert, Spinner } from 'react-bootstrap';
 import { TiTick, TiTimes } from 'react-icons/ti';
 
 const ViewCourse = () => {
+  let queryString = '?';
   const [course, setCourse] = useState({
     title: '',
     description: '',
@@ -65,7 +66,6 @@ const ViewCourse = () => {
   };
 
   return (
-    course && (
       <div className='container'>
         <h3>{course.title}</h3>
         <img src={course.imagePath} alt={course.title} className='img-fluid' />
@@ -92,12 +92,11 @@ const ViewCourse = () => {
         <h4>Instructors</h4>
         {instructorDetails.map(instructor => (
           <div>
-            <p>{instructor.gender}</p>
+            <p>{instructor.name.first}</p>
           </div>
         ))}
-        {instructorDetails && <h5>{instructorDetails.gender}</h5>}
       </div>
-    )
+    
   );
 };
 

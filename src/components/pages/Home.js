@@ -5,6 +5,7 @@ import { TiTick, TiTimes } from 'react-icons/ti';
 import WelcomeMessage from '../common/WelcomeMessage';
 import { API_COURSES } from '../api/request';
 import { Button, Pagination, Table } from 'react-bootstrap';
+import StatsComponent from '../common/StatsComponent';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -26,6 +27,7 @@ const Home = () => {
   return (
     <div className='container'>
       <WelcomeMessage />
+      <StatsComponent />
       <div className='py-4'>
         <Table bordered>
           <thead>
