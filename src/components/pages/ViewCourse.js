@@ -68,7 +68,7 @@ const ViewCourse = () => {
   return (
       <div className='container'>
         <h3>{course.title}</h3>
-        <img src={course.imagePath} alt={course.title} className='img-fluid' />
+        <img src={course.imagePath} alt={course.title} />
         <h5>Price: {course.price.normal}€</h5>
         <h5>
           Bookable:

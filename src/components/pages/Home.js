@@ -25,58 +25,60 @@ const Home = () => {
   };
 
   return (
-    <div className='container'>
+    <>
       <WelcomeMessage />
-      <StatsComponent />
-      <div className='py-4'>
-        <Table bordered>
-          <thead>
-            <tr>
-              <th scope='col'>#</th>
-              <th scope='col'>Title</th>
-              <th scope='col'>Bookable</th>
-              <th scope='col'>Price</th>
-              <th scope='col'>Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map((course, index) => (
+      <div className='container'>
+        <StatsComponent />
+        <div className='py-4'>
+          <Table bordered>
+            <thead>
               <tr>
-                <th scope='row'>{course.id}</th>
-                <td>{course.title}</td>
-                <td>
-                  {course.open ? (
-                    <TiTick size={22} style={{ fill: 'green' }} />
-                  ) : (
-                    <TiTimes size={22} style={{ fill: 'red' }} />
-                  )}
-                </td>
-                <td>{course.price.normal}€</td>
-                <td>
-                  {course.dates.start_date} - {course.dates.end_date}
-                </td>
-                <td>
-                  <Link
-                    className='btn btn-outline-info mr-2'
-                    to={`/courses/${course.id}`}
-                  >
-                    View Details
-                  </Link>
-                  <Link
-                    className='btn btn-outline-danger mr-2'
-                    onClick={() => deleteCourse(course.id)}
-                  >
-                    Delete
-                  </Link>
-                </td>
+                <th scope='col'>#</th>
+                <th scope='col'>Title</th>
+                <th scope='col'>Bookable</th>
+                <th scope='col'>Price</th>
+                <th scope='col'>Date</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Button className='float-right'>View all</Button>
+            </thead>
+            <tbody>
+              {courses.map((course, index) => (
+                <tr>
+                  <th scope='row'>{course.id}</th>
+                  <td>{course.title}</td>
+                  <td>
+                    {course.open ? (
+                      <TiTick size={22} style={{ fill: 'green' }} />
+                    ) : (
+                      <TiTimes size={22} style={{ fill: 'red' }} />
+                    )}
+                  </td>
+                  <td>{course.price.normal}€</td>
+                  <td>
+                    {course.dates.start_date} - {course.dates.end_date}
+                  </td>
+                  <td>
+                    <Link
+                      className='btn btn-outline-info mr-2'
+                      to={`/courses/${course.id}`}
+                    >
+                      View Details
+                    </Link>
+                    <Link
+                      className='btn btn-outline-danger mr-2'
+                      onClick={() => deleteCourse(course.id)}
+                    >
+                      Delete
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <Button className='float-right'>View all</Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

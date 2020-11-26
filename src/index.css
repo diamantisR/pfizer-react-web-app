@@ -102,3 +102,71 @@ code {
 table {
   text-align: center;
 }
+
+.jumbotron {
+  margin-bottom: 1.2rem !important;
+  border-radius: 0 !important;
+}
+
+.jumbo-welcome {
+  position: relative;
+  background: rgb(2, 0, 36);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(78, 150, 221, 1) 0%,
+    rgba(81, 148, 218, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(78, 150, 221, 1) 0%,
+    rgba(81, 148, 218, 1) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(78, 150, 221, 1) 0%,
+    rgba(81, 148, 218, 1) 100%
+  );
+}
+
+.jumbo-welcome img {
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 20px;
+  right: 40px;
+}
+
+.not-found {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(2, 0, 36);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(48, 102, 156, 1) 0%,
+    rgba(101, 163, 228, 1) 42%,
+    rgba(81, 148, 218, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(48, 102, 156, 1) 0%,
+    rgba(101, 163, 228, 1) 42%,
+    rgba(81, 148, 218, 1) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(48, 102, 156, 1) 0%,
+    rgba(101, 163, 228, 1) 42%,
+    rgba(81, 148, 218, 1) 100%
+  );
+}

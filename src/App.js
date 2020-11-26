@@ -8,6 +8,7 @@ import AddCourse from './components/forms/AddCourse';
 import EditCourse from './components/forms/EditCourse';
 import ViewCourse from './components/pages/ViewCourse';
 import CoursesList from './components/pages/CoursesList';
+import NotFound from './components/common/NotFound';
 
 const App = () => { 
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route exact path='/courses/add' component={AddCourse} />
           <Route exact path='/courses/edit/:id' component={EditCourse} />
           <Route exact path='/courses/:id' component={ViewCourse} />
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>

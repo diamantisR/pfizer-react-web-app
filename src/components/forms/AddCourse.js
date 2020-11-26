@@ -8,7 +8,7 @@ const AddCourse = () => {
   let history = useHistory();
   const [options, setOptions] = useState([]);
   const [title, setTitle] = useState('');
-  const [imagePath, setImagePath] = useState('');
+  const [imagePath, setImagePath] = useState('/default-course.png');
   const [duration, setDuration] = useState('');
   const [open, setOpen] = useState(false);
   const [instructors, setInstructors] = useState([]);
@@ -131,17 +131,16 @@ const AddCourse = () => {
         }
         <h4>Instructors</h4>
         {options.map(i => (
-            <label style={{marginRight: '5px'}}>
+          <label style={{ marginRight: '5px' }}>
             <input
-                type='checkbox'
-                name={i.id}
-                value={i.id}
-                checked={instructors.includes(i.id)}
-                onChange={onCheckedChanged}
-              />{' '}
-              {i.name.first + ' ' + i.name.last}
-            </label>
-          
+              type='checkbox'
+              name={i.id}
+              value={i.id}
+              checked={instructors.includes(i.id)}
+              onChange={onCheckedChanged}
+            />{' '}
+            {i.name.first + ' ' + i.name.last}
+          </label>
         ))}
         <hr />
         {[
