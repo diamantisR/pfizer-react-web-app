@@ -132,7 +132,6 @@ table {
 
 .jumbo-welcome img {
   position: absolute;
-  width: auto;
   height: auto;
   top: 40px;
   right: 50px;
@@ -168,4 +167,10 @@ table {
     rgba(101, 163, 228, 1) 42%,
     rgba(81, 148, 218, 1) 100%
   );
+}
+
+.default-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

@@ -6,22 +6,37 @@ import { API_COURSES, API_INSTRUCTORS } from '../api/request';
 
 const EditCourse = () => {
   let history = useHistory();
-  const [course, setCourse] = useState({});
+  const [course, setCourse] = useState({
+    title: '',
+    imagePath: '',
+    duration: '',
+    open: false,
+    instructors: [],
+    description: '',
+    price: {
+      normal: 0,
+      early_bird: 0,
+    },
+    dates: {
+      start_date: '',
+      end_date: '',
+    },
+  });
   const [options, setOptions] = useState([]);
-  const [title, setTitle] = useState('');
-  const [imagePath, setImagePath] = useState('');
-  const [duration, setDuration] = useState('');
-  const [open, setOpen] = useState(false);
-  const [instructors, setInstructors] = useState([]);
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState({
-    normal: 0,
-    early_bird: 0,
-  });
-  const [dates, setDates] = useState({
-    start_date: '',
-    end_date: '',
-  });
+  // const [title, setTitle] = useState('');
+  // const [imagePath, setImagePath] = useState('');
+  // const [duration, setDuration] = useState('');
+  // const [open, setOpen] = useState(false);
+  // const [instructors, setInstructors] = useState([]);
+  // const [description, setDescription] = useState('');
+  // const [price, setPrice] = useState({
+  //   normal: 0,
+  //   early_bird: 0,
+  // });
+  // const [dates, setDates] = useState({
+  //   start_date: '',
+  //   end_date: '',
+  // });
 
   const { id } = useParams();
 
@@ -50,6 +65,17 @@ const EditCourse = () => {
     setOptions(result.data);
   };
 
+  const {
+    title,
+    imagePath,
+    duration,
+    open,
+    instructors,
+    description,
+    price,
+    dates,
+  } = course;
+
   const onSubmit = async e => {
     e.preventDefault();
     await axios.put(`${API_COURSES}/${id}`, {
@@ -65,7 +91,34 @@ const EditCourse = () => {
     history.push('/');
   };
 
-  const onInputChange = ({ target }, setState) => {
+  const onInputChange = e => {
+    console.log(e.target.checked);
+    if (
+      e.target.name === 'normal' ||
+      e.target.name === 'early_bird' ||
+      e.target.name === 'start_date' ||
+      e.target.name === 'end_date'
+    ) {
+      setCourse(course => ({
+        ...course,
+        [e.target.name]: {
+          ...e.target.value,
+        },
+      }));
+    } else if (e.target.name === 'open') {
+      setCourse(course => ({
+        ...course,
+        [e.target.name]: e.target.checked,
+      }));
+    } else {
+      setCourse(course => ({
+        ...course,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  };
+
+  /*   const onInputChange = ({ target }, setState) => {
     const { name, value } = target;
     if (
       name === 'normal' ||
@@ -79,6 +132,7 @@ const EditCourse = () => {
       }));
     } else {
       setState(value);
+      console.log(value);
     }
   };
 
@@ -91,10 +145,7 @@ const EditCourse = () => {
     }
 
     console.log(instructors);
-  };
-
-  const { normal, early_bird } = price;
-  const { start_date, end_date } = dates;
+  }; */
 
   return (
     <div className='container'>
@@ -108,21 +159,18 @@ const EditCourse = () => {
             state: title,
             type: 'text',
             placeholder: 'Title',
-            setState: setTitle,
           },
           {
             field: 'duration',
             state: duration,
             type: 'text',
             placeholder: 'Duration',
-            setState: setDuration,
           },
           {
             field: 'imagePath',
             state: imagePath,
             type: 'text',
             placeholder: 'Image Path',
-            setState: setImagePath,
           },
         ].map(({ field, state, type, placeholder, setState }) => (
           <Form.Group key={field} controlId={field}>
@@ -143,12 +191,13 @@ const EditCourse = () => {
               value={open}
               name={open}
               label='Bookable'
-              onChange={e => setOpen(e.target.checked)}
+              onChange={e => onInputChange(e)}
+              // onChange={e => setCourse(e.target.checked)}
             />
           </Form.Group>
         }
         <h4>Instructors</h4>
-        {options.map(i => (
+        {/* {options.map(i => (
           <label style={{ marginRight: '5px' }}>
             <input
               type='checkbox'
@@ -159,7 +208,7 @@ const EditCourse = () => {
             />{' '}
             {i.name.first + ' ' + i.name.last}
           </label>
-        ))}
+        ))} */}
         <hr />
         {[
           {
@@ -167,37 +216,32 @@ const EditCourse = () => {
             state: description,
             type: 'text',
             placeholder: 'Description',
-            setState: setDescription,
           },
           {
             field: 'normal',
-            state: normal,
+            state: price.normal,
             type: 'number',
             placeholder: 'Normal',
-            setState: setPrice,
           },
           {
             field: 'early_bird',
-            state: early_bird,
+            state: price.early_bird,
             type: 'number',
             placeholder: 'Early bird',
-            setState: setPrice,
           },
           {
             field: 'start_date',
-            state: start_date,
+            state: dates.start_date,
             type: 'text',
             placeholder: 'Start date',
-            setState: setDates,
           },
           {
             field: 'end_date',
-            state: end_date,
+            state: dates.end_date,
             type: 'text',
             placeholder: 'End Date',
-            setState: setDates,
           },
-        ].map(({ field, state, type, placeholder, setState }) => (
+        ].map(({ field, state, type, placeholder }) => (
           <Form.Group key={field} controlId={field}>
             <Form.Label>{placeholder}</Form.Label>
             <Form.Control
@@ -205,7 +249,7 @@ const EditCourse = () => {
               placeholder={placeholder}
               value={state}
               name={field}
-              onChange={e => onInputChange(e, setState)}
+              onChange={e => onInputChange(e)}
             />
           </Form.Group>
         ))}

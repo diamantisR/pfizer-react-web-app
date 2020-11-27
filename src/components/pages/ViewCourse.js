@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_COURSES, API_INSTRUCTORS } from '../api/request';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert, Spinner, Container, Row, Col, Card } from 'react-bootstrap';
 import { TiTick, TiTimes } from 'react-icons/ti';
 
 const ViewCourse = () => {
+  let history = useHistory();
   let queryString = '?';
+
   const [course, setCourse] = useState({
     title: '',
     description: '',
@@ -53,6 +55,11 @@ const ViewCourse = () => {
     fetchCourses();
   }, []);
 
+  const deleteCourse = async id => {
+    await axios.delete(`${API_COURSES}/${id}`);
+    history.push('/');
+  };
+
   const fetchInstructorsDetails = query => {
     axios
       .get(`${API_INSTRUCTORS}/${query}`)
@@ -66,37 +73,85 @@ const ViewCourse = () => {
   };
 
   return (
-      <div className='container'>
-        <h3>{course.title}</h3>
-        <img src={course.imagePath} alt={course.title} />
-        <h5>Price: {course.price.normal}€</h5>
-        <h5>
-          Bookable:
-          {course.open ? (
-            <TiTick size={23} style={{ fill: 'green' }} />
-          ) : (
-            <TiTimes size={23} style={{ fill: 'red' }} />
-          )}
-        </h5>
-        <div dangerouslySetInnerHTML={{ __html: course.description }}></div>
-        <p>
-          {
-            <Link
-              to={`/courses/edit/${course.id}`}
-              className='btn btn-success btn-edit'
+    <Container>
+      <Row>
+        <Col xs={6} md={8}>
+          <h3>{course.title}</h3>
+          <img
+            style={{width: '92%'}}
+            src={course.imagePath}
+            alt={course.title}
+          />
+          <Row>
+            <Col md={6}>
+              {' '}
+              <h5>Price: {course.price.normal}€</h5>
+              <h6>
+                Bookable:
+                {course.open ? (
+                  <TiTick size={23} style={{ fill: 'green' }} />
+                ) : (
+                  <TiTimes size={23} style={{ fill: 'red' }} />
+                )}
+              </h6>
+            </Col>
+            <Col md={6}>
+              <h5>Duration {course.duration}</h5>
+              <h6>
+                Dates:{' '}
+                {`${course.dates.start_date.replaceAll(
+                  '-',
+                  '/'
+                )} - ${course.dates.end_date.replaceAll('-', '/')}`}
+              </h6>
+            </Col>
+          </Row>
+
+          <div dangerouslySetInnerHTML={{ __html: course.description }}></div>
+        </Col>
+        <Col xs={6} md={4} style={{ marginTop: '40px' }}>
+          <p>
+            {
+              <Link
+                to={`/courses/edit/${course.id}`}
+                className='btn btn-outline-success btn-edit'
+              >
+                Edit
+              </Link>
+            }
+            {
+              <Link
+                style={{ marginLeft: '10px' }}
+                onClick={() => deleteCourse(course.id)}
+                // to={`/courses/edit/${course.id}`}
+                className='btn btn-danger'
+              >
+                Delete
+              </Link>
+            }
+            <hr />
+          </p>
+          <h4>Instructors</h4>
+          {instructorDetails.map(instructor => (
+            <Card
+              border='secondary'
+              style={{ width: '24rem', marginBottom: '10px' }}
             >
-              Edit
-            </Link>
-          }
-        </p>
-        <h4>Instructors</h4>
-        {instructorDetails.map(instructor => (
-          <div>
-            <p>{instructor.name.first}</p>
-          </div>
-        ))}
-      </div>
-    
+              <Card.Body style={{ padding: '0.6rem' }}>
+                <Card.Title>{`${instructor.name.first} ${instructor.name.last} (${instructor.dob})`}</Card.Title>
+                <Card.Subtitle>Email: {instructor.email}</Card.Subtitle>
+                <Card.Text style={{ marginTop: '10px' }}>
+                  {instructor.bio}
+                </Card.Text>
+                <a href='#' target='_blank'>
+                  Linkedin
+                </a>
+              </Card.Body>
+            </Card>
+          ))}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

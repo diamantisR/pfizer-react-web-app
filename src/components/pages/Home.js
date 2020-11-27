@@ -30,10 +30,10 @@ const Home = () => {
       <div className='container'>
         <StatsComponent />
         <div className='py-4'>
-          <table class='table border shadow'>
+          <table className='table border shadow'>
             <thead>
               <tr>
-                <th scope='col'>#</th>
+                {/* <th scope='col'>#</th> */}
                 <th scope='col'>Title</th>
                 <th scope='col'>Bookable</th>
                 <th scope='col'>Price</th>
@@ -44,7 +44,7 @@ const Home = () => {
             <tbody>
               {courses.map((course, index) => (
                 <tr>
-                  <th scope='row'>{course.id}</th>
+                  
                   <td>{course.title}</td>
                   <td>
                     {course.open ? (

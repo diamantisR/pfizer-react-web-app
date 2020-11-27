@@ -4,6 +4,7 @@ import { Spinner, Alert, Col } from 'react-bootstrap';
 import { API_COURSES } from '../api/request';
 import Courses from '../pages/Courses';
 import CourseCard from '../common/CourseCard';
+import { BounceLoader } from 'react-spinners';
 
 const GetCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -35,7 +36,11 @@ const GetCourses = () => {
   }
 
   if (isLoading) {
-    return <Spinner animation='border' size='lg' />;
+    return (
+      <div className='default-spinner'>
+        <BounceLoader loading={isLoading} size={60} color='maroon' />
+      </div>
+    );
   }
 
   return (
