@@ -15,13 +15,13 @@ const Home = () => {
   }, []);
 
   const fetchCourses = async () => {
-    const result = await axios.get(API_COURSES);
+    const result = await axios.get(`${API_COURSES}?_limit=5`);
     setCourses(result.data);
   };
 
-  const deleteCourse = async id => {
-    await axios.delete(`${API_COURSES}/${id}`);
-    fetchCourses();
+  const fetchAll = async () => {
+    const result = await axios.get(API_COURSES);
+    setCourses(result.data);
   };
 
   return (
@@ -29,7 +29,8 @@ const Home = () => {
       <WelcomeMessage />
       <div className='container'>
         <StatsComponent />
-        <div className='py-4'>
+        <div className='py-3'>
+          <h5 style={{ margin: '7px 5px' }}>Last 5 Courses</h5>
           <table className='table border shadow'>
             <thead>
               <tr>
@@ -44,7 +45,6 @@ const Home = () => {
             <tbody>
               {courses.map((course, index) => (
                 <tr>
-                  
                   <td>{course.title}</td>
                   <td>
                     {course.open ? (
@@ -55,7 +55,8 @@ const Home = () => {
                   </td>
                   <td>{course.price.normal}€</td>
                   <td>
-                    {course.dates.start_date} - {course.dates.end_date}
+                    {course.dates.start_date.replaceAll('-', '/')} -{' '}
+                    {course.dates.end_date.replaceAll('-', '/')}
                   </td>
                   <td>
                     <Link
@@ -64,18 +65,20 @@ const Home = () => {
                     >
                       View Details
                     </Link>
-                    <Link
+                    {/* <Link
                       className='btn btn-outline-danger mr-2'
                       onClick={() => deleteCourse(course.id)}
                     >
                       Delete
-                    </Link>
+                    </Link> */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <Button className='float-right'>View all</Button>
+          <Button className='float-right' onClick={fetchAll}>
+            View all
+          </Button>
         </div>
       </div>
     </>

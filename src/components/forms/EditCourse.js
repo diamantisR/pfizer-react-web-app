@@ -22,21 +22,7 @@ const EditCourse = () => {
       end_date: '',
     },
   });
-  const [options, setOptions] = useState([]);
-  // const [title, setTitle] = useState('');
-  // const [imagePath, setImagePath] = useState('');
-  // const [duration, setDuration] = useState('');
-  // const [open, setOpen] = useState(false);
-  // const [instructors, setInstructors] = useState([]);
-  // const [description, setDescription] = useState('');
-  // const [price, setPrice] = useState({
-  //   normal: 0,
-  //   early_bird: 0,
-  // });
-  // const [dates, setDates] = useState({
-  //   start_date: '',
-  //   end_date: '',
-  // });
+  const [instructorCheckoxes, setInstructorCheckoxes] = useState([]);
 
   const { id } = useParams();
 
@@ -50,19 +36,9 @@ const EditCourse = () => {
     setCourse(result.data);
   };
 
-  // const onSubmit = async e => {
-  //   e.preventDefault();
-  //   await axios.put(`${API_COURSES}/${id}`, course);
-  //   history.push(`/courses/${id}`);
-  // };
-
-  // useEffect(() => {
-  //   fetchInstructors();
-  // }, []);
-
   const fetchInstructors = async () => {
     const result = await axios.get(API_INSTRUCTORS);
-    setOptions(result.data);
+    setInstructorCheckoxes(result.data);
   };
 
   const {
@@ -92,171 +68,181 @@ const EditCourse = () => {
   };
 
   const onInputChange = e => {
-    console.log(e.target.checked);
-    if (
-      e.target.name === 'normal' ||
-      e.target.name === 'early_bird' ||
-      e.target.name === 'start_date' ||
-      e.target.name === 'end_date'
-    ) {
-      setCourse(course => ({
-        ...course,
-        [e.target.name]: {
-          ...e.target.value,
-        },
-      }));
-    } else if (e.target.name === 'open') {
-      setCourse(course => ({
-        ...course,
-        [e.target.name]: e.target.checked,
-      }));
-    } else {
-      setCourse(course => ({
-        ...course,
-        [e.target.name]: e.target.value,
-      }));
+    switch (e.target.name) {
+      case 'normal':
+      case 'early_bird':
+        setCourse(course => ({
+          ...course,
+          price: { ...course.price, [e.target.name]: e.target.value },
+        }));
+        break;
+      case 'start_date':
+      case 'end_date':
+        setCourse(course => ({
+          ...course,
+          dates: {
+            ...course.dates,
+            [e.target.name]: e.target.value.replaceAll('-', '/'),
+          },
+        }));
+        break;
+      default:
+        setCourse(course => ({
+          ...course,
+          [e.target.name]: e.target.value,
+        }));
+        break;
     }
   };
 
-  /*   const onInputChange = ({ target }, setState) => {
-    const { name, value } = target;
-    if (
-      name === 'normal' ||
-      name === 'early_bird' ||
-      name === 'start_date' ||
-      name === 'end_date'
-    ) {
-      setState(address => ({
-        ...address,
-        [name]: value,
-      }));
-    } else {
-      setState(value);
-      console.log(value);
-    }
+  const onOpenChange = e => {
+    setCourse(course => ({
+      ...course,
+      open: e.target.checked,
+    }));
   };
 
   const onCheckedChanged = e => {
     const value = e.target.value;
     if (instructors.includes(value)) {
-      setInstructors(instructors.filter(instructors => instructors !== value));
+      setCourse(course => ({
+        ...course,
+        instructors: instructors.filter(instructors => instructors !== value),
+      }));
     } else {
-      setInstructors([...instructors, value]);
+      setCourse(course => ({
+        ...course,
+        instructors: [...instructors, value],
+      }));
     }
-
-    console.log(instructors);
-  }; */
+  };
 
   return (
-    <div className='container'>
-      <Form
-        style={{ background: '#fff', padding: '10px' }}
-        onSubmit={e => onSubmit(e)}
-      >
-        {[
-          {
-            field: 'title',
-            state: title,
-            type: 'text',
-            placeholder: 'Title',
-          },
-          {
-            field: 'duration',
-            state: duration,
-            type: 'text',
-            placeholder: 'Duration',
-          },
-          {
-            field: 'imagePath',
-            state: imagePath,
-            type: 'text',
-            placeholder: 'Image Path',
-          },
-        ].map(({ field, state, type, placeholder, setState }) => (
-          <Form.Group key={field} controlId={field}>
-            <Form.Label>{placeholder}</Form.Label>
-            <Form.Control
-              type={type}
-              placeholder={placeholder}
-              value={state}
-              name={field}
-              onChange={e => onInputChange(e, setState)}
-            />
-          </Form.Group>
-        ))}
-        {
-          <Form.Group controlId='formBasicCheckbox'>
-            <Form.Check
-              type='checkbox'
-              value={open}
-              name={open}
-              label='Bookable'
-              onChange={e => onInputChange(e)}
-              // onChange={e => setCourse(e.target.checked)}
-            />
-          </Form.Group>
-        }
-        <h4>Instructors</h4>
-        {/* {options.map(i => (
-          <label style={{ marginRight: '5px' }}>
-            <input
-              type='checkbox'
-              name={i.id}
-              value={i.id}
-              checked={instructors.includes(i.id)}
-              onChange={onCheckedChanged}
-            />{' '}
-            {i.name.first + ' ' + i.name.last}
-          </label>
-        ))} */}
-        <hr />
-        {[
-          {
-            field: 'description',
-            state: description,
-            type: 'text',
-            placeholder: 'Description',
-          },
-          {
-            field: 'normal',
-            state: price.normal,
-            type: 'number',
-            placeholder: 'Normal',
-          },
-          {
-            field: 'early_bird',
-            state: price.early_bird,
-            type: 'number',
-            placeholder: 'Early bird',
-          },
-          {
-            field: 'start_date',
-            state: dates.start_date,
-            type: 'text',
-            placeholder: 'Start date',
-          },
-          {
-            field: 'end_date',
-            state: dates.end_date,
-            type: 'text',
-            placeholder: 'End Date',
-          },
-        ].map(({ field, state, type, placeholder }) => (
-          <Form.Group key={field} controlId={field}>
-            <Form.Label>{placeholder}</Form.Label>
-            <Form.Control
-              type={type}
-              placeholder={placeholder}
-              value={state}
-              name={field}
-              onChange={e => onInputChange(e)}
-            />
-          </Form.Group>
-        ))}
-        <Button className='float-right' variant='success' type='submit'>
-          Edit Course
-        </Button>
-      </Form>
+    <div className='container' style={{ marginTop: '15px' }}>
+      <div className='card border-1 shadow'>
+        <div className='card-header'>Edit Course</div>
+        <div className='card-body'>
+          <Form
+            style={{ background: '#fff', padding: '10px' }}
+            onSubmit={e => onSubmit(e)}
+          >
+            {[
+              {
+                field: 'title',
+                state: title,
+                type: 'text',
+                placeholder: 'Title',
+              },
+              {
+                field: 'duration',
+                state: duration,
+                type: 'text',
+                placeholder: 'Duration',
+              },
+              {
+                field: 'imagePath',
+                state: imagePath,
+                type: 'text',
+                placeholder: 'Image Path',
+              },
+            ].map(({ field, state, type, placeholder, setState }) => (
+              <Form.Group key={field} controlId={field}>
+                <Form.Label>{placeholder}</Form.Label>
+                <Form.Control
+                  type={type}
+                  placeholder={placeholder}
+                  value={state}
+                  name={field}
+                  onChange={e => onInputChange(e, setState)}
+                />
+              </Form.Group>
+            ))}
+            {
+              <Form.Group controlId='formBasicCheckbox'>
+                <Form.Check
+                  type='checkbox'
+                  checked={open}
+                  value={open}
+                  name={open}
+                  label='Bookable'
+                  onChange={e => onOpenChange(e)}
+                />
+              </Form.Group>
+            }
+            <h4>Instructors</h4>
+            {instructorCheckoxes.map(instructor => (
+              <label style={{ marginRight: '5px' }}>
+                <input
+                  type='checkbox'
+                  name={instructor.id}
+                  value={instructor.id}
+                  checked={instructors.includes(instructor.id)}
+                  onChange={onCheckedChanged}
+                />{' '}
+                {instructor.name.first + ' ' + instructor.name.last}
+              </label>
+            ))}
+            {/* <hr /> */}
+            <Form.Group key='description' controlId='description'>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type='textarea'
+                placeholder='Description'
+                value={description}
+                rows={2}
+                as='textarea'
+                name='description'
+                onChange={e => {
+                  setCourse(course => ({
+                    ...course,
+                    description: e.target.value,
+                  }));
+                }}
+              />
+            </Form.Group>
+            {[
+              {
+                field: 'normal',
+                state: price.normal,
+                type: 'number',
+                placeholder: 'Normal',
+              },
+              {
+                field: 'early_bird',
+                state: price.early_bird,
+                type: 'number',
+                placeholder: 'Early bird',
+              },
+              {
+                field: 'start_date',
+                state: dates.start_date,
+                type: 'text',
+                placeholder: 'Start date',
+              },
+              {
+                field: 'end_date',
+                state: dates.end_date,
+                type: 'text',
+                placeholder: 'End Date',
+              },
+            ].map(({ field, state, type, placeholder }) => (
+              <Form.Group key={field} controlId={field}>
+                <Form.Label>{placeholder}</Form.Label>
+                <Form.Control
+                  type={type}
+                  placeholder={placeholder}
+                  value={state}
+                  name={field}
+                  onChange={e => onInputChange(e)}
+                />
+              </Form.Group>
+            ))}
+            <Button className='float-right' variant='success' type='submit'>
+              Update Course
+            </Button>
+          </Form>
+        </div>
+      </div>
     </div>
   );
 };

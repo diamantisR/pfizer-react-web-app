@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API_COURSES, API_INSTRUCTORS } from '../api/request';
+import { PulseLoader } from 'react-spinners';
+import { API_COURSES, API_INSTRUCTORS, API_STATS } from '../api/request';
 import { Alert, Spinner, Container, Row, Col, Card } from 'react-bootstrap';
 import { TiTick, TiTimes } from 'react-icons/ti';
 
 const ViewCourse = () => {
   let history = useHistory();
   let queryString = '?';
+  const [total, setTotal] = useState({
+    id: '',
+    title: '',
+    amount: 0,
+  });
 
   const [course, setCourse] = useState({
     title: '',
@@ -39,11 +45,16 @@ const ViewCourse = () => {
         .get(`${API_COURSES}/${id}`)
         .then(response => {
           setCourse(response.data);
-          setIsLoading(false);
+
+          setTimeout(_ => {
+            setIsLoading(false);
+          }, 800);
+
           const { instructors } = response.data;
           instructors.forEach(id => {
             queryString += `id=${id}&`;
           });
+
           fetchInstructorsDetails(queryString.slice(0, -1));
         })
         .catch(error => {
@@ -53,24 +64,49 @@ const ViewCourse = () => {
     };
 
     fetchCourses();
+    loadStats();
   }, []);
+
+  const loadStats = async () => {
+    const res = await axios.get(`${API_STATS}/02`);
+    setTotal(res.data);
+  };
 
   const deleteCourse = async id => {
     await axios.delete(`${API_COURSES}/${id}`);
+    await axios.put(`${API_STATS}/02`, {
+      id: total.id,
+      title: total.title,
+      amount: total.amount - 1,
+    });
     history.push('/');
   };
 
   const fetchInstructorsDetails = query => {
-    axios
-      .get(`${API_INSTRUCTORS}/${query}`)
-      .then(response => {
-        setInstructorDetails(response.data);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    if (query) {
+      axios
+        .get(`${API_INSTRUCTORS}/${query}`)
+        .then(response => {
+          setInstructorDetails(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   };
+
+  if (error) {
+    return <Alert variant='warning'>{error.message}</Alert>;
+  }
+
+  if (isLoading) {
+    return (
+      <div className='default-spinner' style={{ marginTop: '60px' }}>
+        <PulseLoader loading={isLoading} size={20} color='#007bff' />
+        <h5>Loading course..</h5>
+      </div>
+    );
+  }
 
   return (
     <Container>
@@ -78,14 +114,16 @@ const ViewCourse = () => {
         <Col xs={6} md={8}>
           <h3>{course.title}</h3>
           <img
-            style={{width: '92%'}}
+            style={{ width: '92%' }}
             src={course.imagePath}
             alt={course.title}
           />
           <Row>
             <Col md={6}>
               {' '}
-              <h5>Price: {course.price.normal}€</h5>
+              <h5 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
+                Price: {course.price.normal}€
+              </h5>
               <h6>
                 Bookable:
                 {course.open ? (
@@ -96,7 +134,9 @@ const ViewCourse = () => {
               </h6>
             </Col>
             <Col md={6}>
-              <h5>Duration {course.duration}</h5>
+              <h5 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
+                Duration {course.duration}
+              </h5>
               <h6>
                 Dates:{' '}
                 {`${course.dates.start_date.replaceAll(

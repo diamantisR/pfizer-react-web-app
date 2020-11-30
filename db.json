@@ -101,18 +101,21 @@
     },
     {
       "title": "afafaffa",
-      "imagePath": "",
-      "duration": "",
-      "open": false,
-      "instructors": [],
-      "description": "",
+      "imagePath": "/ui-ux.png",
+      "duration": "4 Fridays and 4 Saturdays",
+      "open": true,
+      "instructors": [
+        "01",
+        "02"
+      ],
+      "description": "afafa",
       "price": {
-        "normal": 0,
-        "early_bird": 0
+        "normal": "5555",
+        "early_bird": "5555"
       },
       "dates": {
-        "start_date": "",
-        "end_date": ""
+        "start_date": "2020/10/12",
+        "end_date": "2020/10/18"
       },
       "id": "mgsVGdN"
     }
